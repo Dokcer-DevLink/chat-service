@@ -1,7 +1,10 @@
-package com.goorm.devlink.chatservice.vo;
+package com.example.chattingservice.vo;
 
 
+import com.example.chattingservice.dto.ChatRoomDto;
+import com.example.chattingservice.dto.RoomUserCreateDto;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Getter

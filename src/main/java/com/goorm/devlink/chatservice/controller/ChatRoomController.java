@@ -1,6 +1,10 @@
-package com.goorm.devlink.chatservice.controller;
-
-
+package com.example.chattingservice.controller;
+import com.example.chattingservice.config.properties.vo.KafkaConfigVo;
+import com.example.chattingservice.dto.ChatDto;
+import com.example.chattingservice.util.MessageUtil;
+import com.example.chattingservice.vo.ChatRoomCreateResponse;
+import com.example.chattingservice.vo.ChatRoomResponse;
+import com.example.chattingservice.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Slice;
@@ -9,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -39,7 +42,7 @@ public class ChatRoomController {
     // 채팅리스트 화면 조회
     @GetMapping("/api/chat/rooms")
     public ResponseEntity<List<ChatRoomResponse>> findAllChatRoomsByUserId(@RequestHeader("userUuid") @NotBlank String userUuid){
-        return new ResponseEntity<>(chatRoomService.findAllChatRoomByUserId(userUuid), HttpStatus.OK);
+        return new ResponseEntity<>(chatRoomService.findAllChatRoomByUserId(userUuid),HttpStatus.OK);
     }
 
     // 채팅방 생성
@@ -55,7 +58,7 @@ public class ChatRoomController {
 
     @GetMapping("/api/chat")
     public ResponseEntity<Slice<ChatDto>> findAllChatList(@RequestParam("roomUuid") @NotBlank String roomUuid,
-                                                          @RequestParam("beforeTime") @NotBlank String beforeTime ){
+                                          @RequestParam("beforeTime") @NotBlank String beforeTime ){
         return new ResponseEntity<>(chatRoomService.findAllChatList(roomUuid,
                 LocalDateTime.parse(beforeTime, DateTimeFormatter.ISO_DATE_TIME)),HttpStatus.OK);
     }

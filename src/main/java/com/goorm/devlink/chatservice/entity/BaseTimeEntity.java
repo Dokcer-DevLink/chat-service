@@ -1,4 +1,5 @@
-package com.goorm.devlink.chatservice.entity;
+package com.example.chattingservice.entity;
+
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

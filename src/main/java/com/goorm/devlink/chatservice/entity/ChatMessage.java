@@ -1,8 +1,8 @@
-package com.goorm.devlink.chatservice.entity;
+package com.example.chattingservice.entity;
 
 
+import com.example.chattingservice.dto.ChatDto;
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -21,7 +21,7 @@ public class ChatMessage extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "MESSAGE_SEQ_GENERATOR")
+                    generator = "MESSAGE_SEQ_GENERATOR")
     @Column(name = "message_id")
     private Long id;
     @Column(name="message")

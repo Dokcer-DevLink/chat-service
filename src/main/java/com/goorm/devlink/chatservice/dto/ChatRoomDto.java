@@ -1,4 +1,4 @@
-package com.goorm.devlink.chatservice.dto;
+package com.example.chattingservice.dto;
 
 
 import lombok.*;
@@ -6,6 +6,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
 
 @Getter
 @Setter

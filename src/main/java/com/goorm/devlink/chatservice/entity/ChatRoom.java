@@ -1,8 +1,6 @@
-package com.goorm.devlink.chatservice.entity;
-
+package com.example.chattingservice.entity;
 
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

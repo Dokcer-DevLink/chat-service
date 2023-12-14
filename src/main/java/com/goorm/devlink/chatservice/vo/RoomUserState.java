@@ -1,4 +1,4 @@
-package com.goorm.devlink.chatservice.vo;
+package com.example.chattingservice.vo;
 
 public enum RoomUserState {
     IN,LEAVE,EXITED,CREATE;

@@ -1,4 +1,4 @@
-package com.goorm.devlink.chatservice.dto;
+package com.example.chattingservice.dto;
 
 
 import lombok.*;

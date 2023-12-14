@@ -1,6 +1,9 @@
-package com.goorm.devlink.chatservice.dto;
+package com.example.chattingservice.dto;
 
+
+import com.example.chattingservice.vo.RoomUserState;
 import lombok.*;
+
 
 @Getter
 @Setter

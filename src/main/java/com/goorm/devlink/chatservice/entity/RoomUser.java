@@ -1,7 +1,6 @@
-package com.goorm.devlink.chatservice.entity;
+package com.example.chattingservice.entity;
 
-
-import com.goorm.devlink.chatservice.vo.RoomUserState;
+import com.example.chattingservice.vo.RoomUserState;
 import lombok.*;
 
 import javax.persistence.*;

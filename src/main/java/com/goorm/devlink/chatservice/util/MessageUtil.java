@@ -1,6 +1,7 @@
-package com.goorm.devlink.chatservice.util;
+package com.example.chattingservice.util;
 
 
+import com.example.chattingservice.dto.ChatDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 

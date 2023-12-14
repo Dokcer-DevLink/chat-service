@@ -1,11 +1,17 @@
-package com.goorm.devlink.chatservice.util;
+package com.example.chattingservice.util;
 
-import com.goorm.devlink.chatservice.vo.ChatRoomResponse;
+
+import com.example.chattingservice.dto.ChatDto;
+import com.example.chattingservice.dto.ChatRoomDto;
+import com.example.chattingservice.entity.ChatMessage;
+import com.example.chattingservice.vo.ChatRoomResponse;
+import com.example.chattingservice.dto.RoomUserCreateDto;
+import com.example.chattingservice.entity.ChatRoom;
+import com.example.chattingservice.entity.RoomUser;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +24,7 @@ public class ModelMapperUtil {
         return mapper.map(RoomUserCreateDto.getInstance(userUuid),RoomUser.class);
     }
 
-    public List<ChatRoomResponse> convertToChatRoomResponseList(List<ChatRoom> chatRoomList, String sender){
+    public List<ChatRoomResponse> convertToChatRoomResponseList(List<ChatRoom> chatRoomList,String sender){
         return convertChatRoomDtoListToChatRoomResponseList(convertChatRoomListToChatRoomDtoList(chatRoomList),sender);
     }
 

@@ -1,9 +1,11 @@
-package com.goorm.devlink.chatservice.vo;
+package com.example.chattingservice.vo;
+
 
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder

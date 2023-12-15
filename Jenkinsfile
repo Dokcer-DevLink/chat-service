@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = 'dockerhub' 
-        IMAGE_NAME = 'lordofkangs/auth-service' // Your DockerHub repository name
+        IMAGE_NAME = 'lordofkangs/chat-service' // Your DockerHub repository name
         IMAGE_TAG = 'tagname' // Replace with your desired tag name, or use dynamic values like ${BUILD_NUMBER}
         REGISTRY = 'docker.io' // DockerHub registry
     }

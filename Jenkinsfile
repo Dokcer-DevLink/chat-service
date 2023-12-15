@@ -23,18 +23,15 @@ pipeline {
 
         stage('Docker Image Build') {
             steps {
-               
                 sh "docker build -t $IMAGE_NAME:$IMAGE_TAG ."
             }
         }
 
         stage('Docker Build and Push') {
             steps {
-                     {
-                    // Login to DockerHub
-                    withDockerRegistry([ credentialsId: DOCKERHUB_CREDENTIALS, url: "" ]){
+                // DockerHub에 로그인
+                withDockerRegistry([ credentialsId: DOCKERHUB_CREDENTIALS, url: "" ]){
                     sh "docker push $IMAGE_NAME:$IMAGE_TAG"
-                    }
                 }
             }
         }

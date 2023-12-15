@@ -15,13 +15,10 @@ pipeline {
                 checkout scm
             }
         }
+    }
         stage('Spring APP Build') {
             steps {
-                // sh './gradlew clean build --warning-mode all' 
                 sh './gradlew bootJar'
-                
-                // Build your Java application (e.g., using Maven or Gradle)
-                // Example: sh 'mvn clean package'
             }
         }
 
@@ -38,10 +35,8 @@ pipeline {
                     // Login to DockerHub
                     withDockerRegistry([ credentialsId: DOCKERHUB_CREDENTIALS, url: "" ]){
                     sh "docker push $IMAGE_NAME:$IMAGE_TAG"
-
-                  
+                    }             
                 }
-            }
         }
     }
 

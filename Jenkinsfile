@@ -15,7 +15,6 @@ pipeline {
                 checkout scm
             }
         }
-    }
         stage('Spring APP Build') {
             steps {
                 sh './gradlew bootJar'
@@ -35,11 +34,11 @@ pipeline {
                     // Login to DockerHub
                     withDockerRegistry([ credentialsId: DOCKERHUB_CREDENTIALS, url: "" ]){
                     sh "docker push $IMAGE_NAME:$IMAGE_TAG"
-                    }             
+                    }
                 }
+            }
         }
     }
-
     post {
         always {
             // Logout from DockerHub

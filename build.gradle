@@ -58,6 +58,10 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
+	// Spring Cloud Kubernetes 라이브러리
+	implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-client-all'
+	implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+
 	//QueryDSL START
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"

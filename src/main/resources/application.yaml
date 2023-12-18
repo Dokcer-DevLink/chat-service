@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: chat-service
+  config:
+    activate:
+      on-profile: default
   messages:
     basename: errors
   datasource:

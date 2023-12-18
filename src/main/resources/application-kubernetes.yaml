@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: chat-service
+  config:
+    activate:
+      on-profile: kubernetes
+  messages:
+    basename: errors
+  datasource:
+    url: jdbc:mysql://${DB_SERVER}:${DB_PORT:3306}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+      use_sql_comments: true  #주석으로 QueryDSL이 변환된 JPQL 확인하는 설정
+      format_sql: true
+    defer-datasource-initialization: true
+    show-sql: true
+    generate-ddl: true
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    enabled: false
+
+data:
+  kafka:
+    topicName: kafka-chat
+    bootstrapServerUrl: localhost:9092 # TODO: K8S에 맞는 URL로 수정 필요
+  stomp:
+    endpoint: /ws-stomp
+    sub: /sub
+    pub: /pub
+  page:
+    offset: 0
+    size: 4
+    orderBy: messageTime

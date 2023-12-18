@@ -25,6 +25,7 @@ spring:
     defer-datasource-initialization: true
     show-sql: true
     generate-ddl: true
+
 eureka:
   instance:
     instance-id: ${spring.cloud.client.hostname}:${spring.application.instance.id:${random.value}}

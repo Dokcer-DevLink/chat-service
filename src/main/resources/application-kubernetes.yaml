@@ -28,8 +28,8 @@ eureka:
 
 data:
   kafka:
-    topicName: kafka-chat
-    bootstrapServerUrl: localhost:9092 # TODO: K8S에 맞는 URL로 수정 필요
+    topicName: ${KAFKA_TOPIC_NAME}
+    bootstrapServerUrl: ${KAFKA_SERVICE}:9092 # TODO: K8S에 맞는 URL로 수정 필요
   stomp:
     endpoint: /ws-stomp
     sub: /sub

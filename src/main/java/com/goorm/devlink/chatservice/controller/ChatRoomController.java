@@ -45,7 +45,7 @@ public class ChatRoomController {
     // 채팅리스트 화면 조회
     @GetMapping("/api/chat/rooms")
     public ResponseEntity<List<ChatRoomResponse>> findAllChatRoomsByUserId(@RequestHeader("userUuid") @NotBlank String userUuid){
-        return new ResponseEntity<>(chatRoomService.findAllChatRoomByUserId(userUuid),HttpStatus.OK);
+        return ResponseEntity.ok(chatRoomService.findAllChatRoomByUserId(userUuid));
     }
 
     // 채팅방 생성
@@ -56,14 +56,14 @@ public class ChatRoomController {
             throw new IllegalArgumentException(messageUtil.getNoEqualUserUuidMessage(userUuid,targetUuid));
         }
         String roomUuid = chatRoomService.findOrCreateChatRoom(userUuid, targetUuid);
-        return new ResponseEntity<>(ChatRoomCreateResponse.getInstance(roomUuid), HttpStatus.CREATED);
+        return ResponseEntity.ok(ChatRoomCreateResponse.getInstance(roomUuid));
     }
 
     @GetMapping("/api/chat")
     public ResponseEntity<Slice<ChatDto>> findAllChatList(@RequestParam("roomUuid") @NotBlank String roomUuid,
                                           @RequestParam("beforeTime") @NotBlank String beforeTime ){
-        return new ResponseEntity<>(chatRoomService.findAllChatList(roomUuid,
-                LocalDateTime.parse(beforeTime, DateTimeFormatter.ISO_DATE_TIME)),HttpStatus.OK);
+        return ResponseEntity.ok(chatRoomService.findAllChatList(roomUuid,
+                LocalDateTime.parse(beforeTime, DateTimeFormatter.ISO_DATE_TIME)));
     }
 
 

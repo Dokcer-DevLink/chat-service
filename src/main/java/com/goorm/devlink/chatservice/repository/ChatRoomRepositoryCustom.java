@@ -6,6 +6,7 @@ import com.goorm.devlink.chatservice.dto.RoomUserFindDto;
 import com.goorm.devlink.chatservice.entity.ChatRoom;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ChatRoomRepositoryCustom {
 
@@ -13,7 +14,7 @@ public interface ChatRoomRepositoryCustom {
 
     long updateRecentMessageData(ChatDto chatDto);
 
-    ChatRoom findChatRoomByUserId(RoomUserFindDto roomUserFindDto);
+    Optional<ChatRoom> findChatRoomByUserId(RoomUserFindDto roomUserFindDto);
 
     List<ChatRoom> findAllChatRoomByUserId(String userUuid); //수정
 

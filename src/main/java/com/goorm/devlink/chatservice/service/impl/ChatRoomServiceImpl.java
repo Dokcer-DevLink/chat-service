@@ -21,6 +21,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -40,14 +42,14 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     @Override
     public String findOrCreateChatRoom(String userUuid, String targetUuid) {
-        ChatRoom chatRoom = chatRoomRepository.findChatRoomByUserId(RoomUserFindDto.getInstance(userUuid, targetUuid));
-        chatRoom = Optional.ofNullable(chatRoom).orElseGet(()->createChatRoom(userUuid, targetUuid));
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomByUserId(RoomUserFindDto.getInstance(userUuid, targetUuid))
+                .orElseGet(()->createChatRoom(userUuid, targetUuid));
         return chatRoom.getRoomUuid();
     }
 
     @Override
     public void processSendMessage(ChatDto chatDto) {
-        ChatRoom chatRoom = Optional.of(chatRoomRepository.findChatRoomByRoomUuid(chatDto.getRoomUuid()))
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomByRoomUuid(chatDto.getRoomUuid())
                 .orElseThrow(() -> new NoSuchElementException(messageUtil.getRoomNoSuchMessage(chatDto.getRoomUuid())));
 
         chatRoomRepository.updateRecentMessageData(chatDto);

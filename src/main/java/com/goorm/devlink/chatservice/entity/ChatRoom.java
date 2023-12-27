@@ -13,16 +13,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-@SequenceGenerator(
-        name= "ROOM_SEQ_GENERATOR",
-        sequenceName = "CHAT_ROOM_SEQ",
-        initialValue = 1, allocationSize = 1
-)
 public class ChatRoom extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "ROOM_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_id")
     private Long roomId;
 

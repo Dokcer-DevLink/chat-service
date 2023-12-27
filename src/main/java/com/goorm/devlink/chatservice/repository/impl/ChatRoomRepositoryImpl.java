@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static com.goorm.devlink.chatservice.entity.QChatRoom.chatRoom;
 import static com.goorm.devlink.chatservice.entity.QRoomUser.roomUser;
@@ -61,7 +62,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
     }
 
     @Override
-    public ChatRoom findChatRoomByUserId(RoomUserFindDto roomUserFindDto) {
+    public Optional<ChatRoom> findChatRoomByUserId(RoomUserFindDto roomUserFindDto) {
 
         ChatRoom chatRoom1=  queryFactory
                 .select(roomUser.chatRoom)
@@ -80,7 +81,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
                         )
                 ).fetchOne();
 
-        return chatRoom1;
+        return Optional.ofNullable(chatRoom1);
 
     }
 

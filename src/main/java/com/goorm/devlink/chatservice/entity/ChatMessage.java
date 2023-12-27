@@ -13,16 +13,10 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @Setter
-@SequenceGenerator(
-        name= "MESSAGE_SEQ_GENERATOR",
-        sequenceName = "CHAT_MESSAGE_SEQ",
-        initialValue = 1, allocationSize = 1
-)
 public class ChatMessage extends BaseTimeEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                    generator = "MESSAGE_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "message_id")
     private Long id;
     @Column(name="message")

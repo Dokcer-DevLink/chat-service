@@ -16,6 +16,10 @@ spring:
       ddl-auto: create
       use_sql_comments: true  #주석으로 QueryDSL이 변환된 JPQL 확인하는 설정
       format_sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
     defer-datasource-initialization: true
     show-sql: true
     generate-ddl: true

@@ -20,9 +20,7 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-    defer-datasource-initialization: true
-    show-sql: true
-    generate-ddl: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 
 eureka:
   client:

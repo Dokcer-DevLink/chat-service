@@ -19,6 +19,7 @@ import javax.validation.ConstraintViolationException;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @RestControllerAdvice(basePackages = "com.example.chattingservice.controller")
@@ -68,6 +69,13 @@ public class ControllerExceptionAdvice {
                                                                        HttpServletRequest request){
         return new ResponseEntity<>(ErrorResult.getInstance(exception.getMessage(),request.getRequestURL().toString())
                 ,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ErrorResult> methodNoSuchElementExceptionHandler(NoSuchElementException exception,
+                                                                           HttpServletRequest request){
+        return new ResponseEntity<>(ErrorResult.getInstance(exception.getMessage(),
+                request.getRequestURL().toString()), HttpStatus.BAD_REQUEST);
     }
 
     private List<String> getMethodArgumentNotValidMessage(MethodArgumentNotValidException ex){

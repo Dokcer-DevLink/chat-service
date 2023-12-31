@@ -36,10 +36,11 @@ public class ChatRoomController {
     private final MessageUtil messageUtil;
 
     @PostMapping("/send")
-    public void publishMessageToTopic(@RequestBody @Valid ChatDto chatDto)
+    public ResponseEntity<Void> publishMessageToTopic(@RequestBody @Valid ChatDto chatDto)
             throws ExecutionException, InterruptedException {
         if(chatDto.getType()==ChatDto.MessageType.TALK) chatRoomService.processSendMessage(chatDto);
         kafkaTemplate.send(kafkaConfigVo.getTopicName(),chatDto).get();
+        return ResponseEntity.ok().build();
     }
 
     // 채팅리스트 화면 조회

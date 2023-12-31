@@ -16,6 +16,7 @@ import org.modelmapper.convention.MatchingStrategies;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Getter
@@ -38,23 +39,14 @@ public class ModelMapperUtil {
     }
 
     private List<ChatRoomDto> convertChatRoomListToChatRoomDtoList(List<ChatRoom> chatRoomList){
-        List<ChatRoomDto> chatRoomDtoList = new ArrayList<>();
-        chatRoomList.forEach( chatRoom -> {
-            ChatRoomDto chatRoomDto = mapper.map(chatRoom, ChatRoomDto.class);
-            chatRoomDtoList.add(chatRoomDto);
-        });
-
-        return chatRoomDtoList;
+        return chatRoomList.stream()
+                .map(chatRoom -> mapper.map(chatRoom,ChatRoomDto.class)).collect(Collectors.toList());
     }
 
-    private List<ChatRoomResponse> convertChatRoomDtoListToChatRoomResponseList(List<ChatRoomDto> chatRoomDtoList, String sender){
-
-        List<ChatRoomResponse> chatRoomResponseList = new ArrayList<>();
-        chatRoomDtoList.forEach(chatRoomDto -> {
-            chatRoomResponseList.add(ChatRoomResponse.convert(chatRoomDto,sender));
-        });
-
-        return chatRoomResponseList;
+    private List<ChatRoomResponse> convertChatRoomDtoListToChatRoomResponseList(List<ChatRoomDto> chatRoomDtoList,
+                                                                                String sender){
+        return chatRoomDtoList.stream()
+                .map(chatRoomDto -> ChatRoomResponse.convert(chatRoomDto, sender)).collect(Collectors.toList());
     }
 
 }

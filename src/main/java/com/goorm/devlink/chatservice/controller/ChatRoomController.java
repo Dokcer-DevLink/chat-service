@@ -36,15 +36,25 @@ public class ChatRoomController {
     private final MessageUtil messageUtil;
 
     @PostMapping("/send")
-    public void publishMessageToTopic(@RequestBody @Valid ChatDto chatDto)
+    public ResponseEntity<Void> publishMessageToTopic(@RequestBody @Valid ChatDto chatDto)
             throws ExecutionException, InterruptedException {
         if(chatDto.getType()==ChatDto.MessageType.TALK) chatRoomService.processSendMessage(chatDto);
         kafkaTemplate.send(kafkaConfigVo.getTopicName(),chatDto).get();
+        log.info("======= Kafka Producer [ SEND ] ========");
+        log.info("전송자 : {}", chatDto.getSenderUuid());
+        log.info("메시지 : {}", chatDto.getMessage());
+        log.info("채팅방 : {}", chatDto.getRoomUuid());
+        log.info("======= ======================== ========");
+        return ResponseEntity.ok().build();
     }
 
     // 채팅리스트 화면 조회
     @GetMapping("/api/chat/rooms")
     public ResponseEntity<List<ChatRoomResponse>> findAllChatRoomsByUserId(@RequestHeader("userUuid") @NotBlank String userUuid){
+        log.info("======= 채팅리스트 조회 ========");
+        log.info("유저 : {} ", userUuid);
+        log.info("======= =========== ========");
+
         return ResponseEntity.ok(chatRoomService.findAllChatRoomByUserId(userUuid));
     }
 
@@ -56,6 +66,10 @@ public class ChatRoomController {
             throw new IllegalArgumentException(messageUtil.getNoEqualUserUuidMessage(userUuid,targetUuid));
         }
         String roomUuid = chatRoomService.findOrCreateChatRoom(userUuid, targetUuid);
+        log.info("======= 채팅방 생성 ========");
+        log.info("채팅방 : {} ", roomUuid);
+        log.info("======= ======== ========");
+
         return ResponseEntity.ok(ChatRoomCreateResponse.getInstance(roomUuid));
     }
 

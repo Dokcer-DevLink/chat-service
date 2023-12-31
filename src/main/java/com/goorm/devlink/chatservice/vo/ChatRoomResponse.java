@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 public class ChatRoomResponse {
 
     private String roomUuid;
+    private String targetNickname;
+    private String imageUrl;
     private String targetUuid;
     private String recentMessage;
     private LocalDateTime recentDate;

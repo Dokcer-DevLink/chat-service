@@ -51,6 +51,10 @@ public class ChatRoomController {
     // 채팅리스트 화면 조회
     @GetMapping("/api/chat/rooms")
     public ResponseEntity<List<ChatRoomResponse>> findAllChatRoomsByUserId(@RequestHeader("userUuid") @NotBlank String userUuid){
+        log.info("======= 채팅리스트 조회 ========");
+        log.info("유저 : {} ", userUuid);
+        log.info("======= =========== ========");
+
         return ResponseEntity.ok(chatRoomService.findAllChatRoomByUserId(userUuid));
     }
 
@@ -62,6 +66,10 @@ public class ChatRoomController {
             throw new IllegalArgumentException(messageUtil.getNoEqualUserUuidMessage(userUuid,targetUuid));
         }
         String roomUuid = chatRoomService.findOrCreateChatRoom(userUuid, targetUuid);
+        log.info("======= 채팅방 생성 ========");
+        log.info("채팅방 : {} ", roomUuid);
+        log.info("======= ======== ========");
+
         return ResponseEntity.ok(ChatRoomCreateResponse.getInstance(roomUuid));
     }
 

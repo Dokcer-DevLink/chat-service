@@ -51,8 +51,11 @@ public class ChatController {
     public void webSocketDisconnectionListener(SessionDisconnectEvent event){
         StompHeaderAccessor stompHeaderAccessor = StompHeaderAccessor.wrap(event.getMessage());
         boolean isUnsubscribe = (boolean)stompHeaderAccessor.getSessionAttributes().get("isUnsubscribe");
-        if(isUnsubscribe){
-            ChatDto chatDtoExit = chatRoomService.doExitUserProcess(stompHeaderAccessor);
+        String roomUuid = (String) stompHeaderAccessor.getSessionAttributes().get("roomUUID");
+        String userUuid = (String) stompHeaderAccessor.getSessionAttributes().get("userUUID");
+
+        if(roomUuid!=null&&userUuid!=null&&isUnsubscribe){
+            ChatDto chatDtoExit = chatRoomService.doExitUserProcess(ChatDto.getInstanceExit(roomUuid, userUuid));
             template.convertAndSend("/sub/chat/room/" + chatDtoExit.getRoomUuid(), chatDtoExit);
         }
 

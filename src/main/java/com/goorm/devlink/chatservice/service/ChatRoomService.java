@@ -21,7 +21,7 @@ public interface ChatRoomService {
 
     public void updateEnterUserState(RoomUserState roomUserState, ChatDto chatDto);
 
-    public ChatDto doExitUserProcess(StompHeaderAccessor stompHeaderAccessor);
+    public ChatDto doExitUserProcess(ChatDto chatDto);
 
     public Slice<ChatDto> findAllChatList(String roomUuid, LocalDateTime beforeTime);
 

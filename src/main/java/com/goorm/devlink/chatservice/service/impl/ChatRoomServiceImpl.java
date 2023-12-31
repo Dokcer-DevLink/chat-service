@@ -77,14 +77,12 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
-    public ChatDto doExitUserProcess(StompHeaderAccessor stompHeaderAccessor) {
-        String roomUUID = (String) stompHeaderAccessor.getSessionAttributes().get("roomUUID");
-        String userUUID = (String) stompHeaderAccessor.getSessionAttributes().get("userUUID");
-        ChatDto chatDtoExit = ChatDto.getInstanceExit(roomUUID, userUUID);
-        long count = roomUserRepository.updateRoomUserState(RoomUserState.EXITED, chatDtoExit);// User 상태 변경하기
-        if ( count <= 0 ) throw new NoSuchElementException(messageUtil.getUserNoSuchMessage(chatDtoExit));
+    public ChatDto doExitUserProcess(ChatDto chatDto) {
 
-        return chatDtoExit;
+        long count = roomUserRepository.updateRoomUserState(RoomUserState.EXITED, chatDto);// User 상태 변경하기
+        if ( count <= 0 ) throw new NoSuchElementException(messageUtil.getUserNoSuchMessage(chatDto));
+
+        return chatDto;
     }
 
     @Override

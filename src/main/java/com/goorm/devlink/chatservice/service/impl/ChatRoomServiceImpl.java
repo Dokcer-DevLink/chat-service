@@ -64,9 +64,9 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
-    public List<ChatRoomResponse> findAllChatRoomByUserId(String userId) {
-        List<ChatRoom> chatRoomList = chatRoomRepository.findAllChatRoomByUserId(userId);
-        return modelMapperUtil.convertToChatRoomResponseList(chatRoomList,userId);
+    public List<ChatRoomResponse> findAllChatRoomByUserId(String userUuid) {
+        List<ChatRoom> chatRoomList = chatRoomRepository.findAllChatRoomByUserId(userUuid);
+        return modelMapperUtil.convertToChatRoomResponseList(chatRoomList,userUuid);
     }
 
     @Override

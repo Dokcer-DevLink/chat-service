@@ -15,6 +15,7 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Slf4j
@@ -31,18 +32,46 @@ public class ChatController {
     )
     public void listen(ChatDto chatDto){
         template.convertAndSend("/sub/chat/room/" + chatDto.getRoomUuid(), chatDto);
+        log.info("======= Kafka Consumer ========");
+        log.info("전송자 : {}", chatDto.getSenderUuid());
+        log.info("메시지 : {}", chatDto.getMessage());
+        log.info("채팅방 : {}", chatDto.getRoomUuid());
+        log.info("======= ============== ========");
     }
 
     @MessageMapping("/chat/sessions")
     public void setSessionOptions(@Payload ChatDto chatDto, SimpMessageHeaderAccessor headerAccessor){
-        headerAccessor.getSessionAttributes().put("userUUID", chatDto.getSenderUuid());
-        headerAccessor.getSessionAttributes().put("roomUUID", chatDto.getRoomUuid());
+
+        headerAccessor.getSessionAttributes().put("userUuid", chatDto.getSenderUuid());
+        headerAccessor.getSessionAttributes().put("roomUuid", chatDto.getRoomUuid());
         chatRoomService.updateEnterUserState(RoomUserState.IN,chatDto);
+        log.info("======== 세션 정보 설정 ( /pub/chat/sessions ) =========");
+        log.info("유저 : {}",chatDto.getSenderUuid());
+        log.info("채팅방 : {}",chatDto.getRoomUuid());
+        log.info("====================================================");
+
     }
 
     @MessageMapping("/chat/leave")
     public void leaveChatRoom(@Payload ChatDto chatDto){
         chatRoomService.updateRoomUserState(RoomUserState.LEAVE,chatDto);
+        log.info("======== 채팅창 LEAVE ===========");
+        log.info("유저 : {}",chatDto.getSenderUuid());
+        log.info("채팅방 : {}",chatDto.getRoomUuid());
+        log.info("================================");
+    }
+
+    @EventListener
+    public void handleWebSocketConnecListener(SessionConnectEvent event) {
+        StompHeaderAccessor stompHeaderAccessor = StompHeaderAccessor.wrap(event.getMessage());
+        String roomUuid = (String) stompHeaderAccessor.getSessionAttributes().get("userUuid");
+        String userUuid = (String) stompHeaderAccessor.getSessionAttributes().get("roomUuid");
+        log.info("======== STOMP 세션 생성 =========");
+        log.info("세션ID : {}",stompHeaderAccessor.getSessionId());
+        log.info("유저 : {}",userUuid);
+        log.info("채팅방 : {}",roomUuid);
+        log.info("메시지 : {} ", event.getMessage());
+        log.info("===============================-");
     }
 
     // 세션이 종료된 경우
@@ -51,9 +80,15 @@ public class ChatController {
     public void webSocketDisconnectionListener(SessionDisconnectEvent event){
         StompHeaderAccessor stompHeaderAccessor = StompHeaderAccessor.wrap(event.getMessage());
         boolean isUnsubscribe = (boolean)stompHeaderAccessor.getSessionAttributes().get("isUnsubscribe");
-        String roomUuid = (String) stompHeaderAccessor.getSessionAttributes().get("roomUUID");
-        String userUuid = (String) stompHeaderAccessor.getSessionAttributes().get("userUUID");
+        String roomUuid = (String) stompHeaderAccessor.getSessionAttributes().get("userUuid");
+        String userUuid = (String) stompHeaderAccessor.getSessionAttributes().get("roomUuid");
 
+        log.info("======== STOMP 세션 종료 =========");
+        log.info("세션ID : {}",stompHeaderAccessor.getSessionId());
+        log.info("유저 : {}",userUuid);
+        log.info("채팅방 : {}",roomUuid);
+        log.info("메시지 : {} ", event.getMessage());
+        log.info("===============================");
         if(roomUuid!=null&&userUuid!=null&&isUnsubscribe){
             ChatDto chatDtoExit = chatRoomService.doExitUserProcess(ChatDto.getInstanceExit(roomUuid, userUuid));
             template.convertAndSend("/sub/chat/room/" + chatDtoExit.getRoomUuid(), chatDtoExit);

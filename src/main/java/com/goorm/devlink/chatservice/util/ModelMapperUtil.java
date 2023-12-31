@@ -43,7 +43,8 @@ public class ModelMapperUtil {
                 .map(chatRoom -> mapper.map(chatRoom,ChatRoomDto.class)).collect(Collectors.toList());
     }
 
-    private List<ChatRoomResponse> convertChatRoomDtoListToChatRoomResponseList(List<ChatRoomDto> chatRoomDtoList, String sender){
+    private List<ChatRoomResponse> convertChatRoomDtoListToChatRoomResponseList(List<ChatRoomDto> chatRoomDtoList,
+                                                                                String sender){
         return chatRoomDtoList.stream()
                 .map(chatRoomDto -> ChatRoomResponse.convert(chatRoomDto, sender)).collect(Collectors.toList());
     }

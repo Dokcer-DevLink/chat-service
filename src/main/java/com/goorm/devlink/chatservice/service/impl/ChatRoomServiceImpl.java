@@ -19,6 +19,7 @@ import com.goorm.devlink.chatservice.vo.response.ChatRoomResponse;
 import com.goorm.devlink.chatservice.vo.RoomUserState;
 import com.goorm.devlink.chatservice.vo.response.ProfileSimpleResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ChatRoomServiceImpl implements ChatRoomService {
 
@@ -117,6 +119,11 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
     private List<ProfileSimpleResponse> getProfileInfo(List<ChatRoom> chatRooms, String userUuid){
         List<String> targetUserUuids = getTargetUserUuids(chatRooms,userUuid);
+        log.info("================= 채팅리스트 가져오기 ( 프로필과의 서비스간 통신 결과 ) =====================");
+        log.info("프로필에서 가져온 데이터 개수 : {}", targetUserUuids.size());
+        targetUserUuids.forEach(targetUuid -> log.info("targetUuid : {} ",targetUuid));
+        log.info("================= ==================================== ========================");
+
         return profileServiceClient.getProfileSimpleInfo(targetUserUuids).getBody();
     }
 

@@ -42,6 +42,7 @@ public class ChatRoomController {
         kafkaTemplate.send(kafkaConfigVo.getTopicName(),chatDto).get();
         log.info("======= Kafka Producer [ SEND ] ========");
         log.info("전송자 : {}", chatDto.getSenderUuid());
+        log.info("타입 : {}",chatDto.getType());
         log.info("메시지 : {}", chatDto.getMessage());
         log.info("채팅방 : {}", chatDto.getRoomUuid());
         log.info("======= ======================== ========");

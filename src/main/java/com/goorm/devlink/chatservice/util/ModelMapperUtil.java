@@ -8,13 +8,12 @@ import com.goorm.devlink.chatservice.dto.RoomUserCreateDto;
 import com.goorm.devlink.chatservice.entity.ChatMessage;
 import com.goorm.devlink.chatservice.entity.ChatRoom;
 import com.goorm.devlink.chatservice.entity.RoomUser;
-import com.goorm.devlink.chatservice.vo.ChatRoomResponse;
+import com.goorm.devlink.chatservice.vo.response.ChatRoomResponse;
+import com.goorm.devlink.chatservice.vo.response.ProfileSimpleResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +26,8 @@ public class ModelMapperUtil {
         return mapper.map(RoomUserCreateDto.getInstance(userUuid),RoomUser.class);
     }
 
-    public List<ChatRoomResponse> convertToChatRoomResponseList(List<ChatRoom> chatRoomList, String sender){
-        return convertChatRoomDtoListToChatRoomResponseList(convertChatRoomListToChatRoomDtoList(chatRoomList),sender);
+    public List<ChatRoomResponse> convertToChatRoomResponseList(List<ChatRoom> chatRoomList, String sender, List<ProfileSimpleResponse> profileInfo){
+        return convertChatRoomDtoListToChatRoomResponseList(convertChatRoomListToChatRoomDtoList(chatRoomList),sender,profileInfo);
     }
 
     public ChatMessage convertToChatMessage(ChatDto chatDto, ChatRoom chatRoom){
@@ -44,9 +43,10 @@ public class ModelMapperUtil {
     }
 
     private List<ChatRoomResponse> convertChatRoomDtoListToChatRoomResponseList(List<ChatRoomDto> chatRoomDtoList,
-                                                                                String sender){
+                                                                                String sender,
+                                                                                List<ProfileSimpleResponse> profileInfo){
         return chatRoomDtoList.stream()
-                .map(chatRoomDto -> ChatRoomResponse.convert(chatRoomDto, sender)).collect(Collectors.toList());
+                .map(chatRoomDto -> ChatRoomResponse.convert(chatRoomDto, sender,profileInfo)).collect(Collectors.toList());
     }
 
 }

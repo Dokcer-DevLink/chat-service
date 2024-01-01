@@ -8,25 +8,25 @@ import com.goorm.devlink.chatservice.dto.RoomUserFindDto;
 import com.goorm.devlink.chatservice.entity.ChatMessage;
 import com.goorm.devlink.chatservice.entity.ChatRoom;
 import com.goorm.devlink.chatservice.entity.RoomUser;
+import com.goorm.devlink.chatservice.feign.ProfileServiceClient;
 import com.goorm.devlink.chatservice.repository.ChatMessageRepository;
 import com.goorm.devlink.chatservice.repository.ChatRoomRepository;
 import com.goorm.devlink.chatservice.repository.RoomUserRepository;
 import com.goorm.devlink.chatservice.service.ChatRoomService;
 import com.goorm.devlink.chatservice.util.MessageUtil;
 import com.goorm.devlink.chatservice.util.ModelMapperUtil;
-import com.goorm.devlink.chatservice.vo.ChatRoomResponse;
+import com.goorm.devlink.chatservice.vo.response.ChatRoomResponse;
 import com.goorm.devlink.chatservice.vo.RoomUserState;
+import com.goorm.devlink.chatservice.vo.response.ProfileSimpleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +38,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     private final ChatMessageRepository chatMessageRepository;
     private final PageConfigVo pageConfigVo;
     private final MessageUtil messageUtil;
+    private final ProfileServiceClient profileServiceClient;
 
 
     @Override
@@ -63,10 +64,11 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         if ( count <= 0 ) throw new NoSuchElementException(messageUtil.getUserNoSuchMessage(chatDto));
     }
 
+    /** 채팅 리스트 조회하기 **/
     @Override
     public List<ChatRoomResponse> findAllChatRoomByUserId(String userUuid) {
-        List<ChatRoom> chatRoomList = chatRoomRepository.findAllChatRoomByUserId(userUuid);
-        return modelMapperUtil.convertToChatRoomResponseList(chatRoomList,userUuid);
+        List<ChatRoom> chatRooms = chatRoomRepository.findAllChatRoomByUserId(userUuid);
+        return getChatRoomList(chatRooms,userUuid);
     }
 
     @Override
@@ -106,6 +108,26 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         roomUserRepository.save(target);
 
         return chatRoom;
+    }
+
+    private List<ChatRoomResponse> getChatRoomList(List<ChatRoom> chatRooms,String userUuid){
+        return ( chatRooms.size() != 0) ?
+                modelMapperUtil.convertToChatRoomResponseList(chatRooms,userUuid,getProfileInfo(chatRooms,userUuid))
+                : new ArrayList<>();
+    }
+    private List<ProfileSimpleResponse> getProfileInfo(List<ChatRoom> chatRooms, String userUuid){
+        List<String> targetUserUuids = getTargetUserUuids(chatRooms,userUuid);
+        return profileServiceClient.getProfileSimpleInfo(targetUserUuids).getBody();
+    }
+
+    private List<String> getTargetUserUuids(List<ChatRoom> chatRoomList,String userUuid){
+        List<String> targetUserUuids = new ArrayList<>();
+        for (ChatRoom chatRoom : chatRoomList) {
+            for (RoomUser roomUser : chatRoom.getRoomUsers()) {
+                if(!roomUser.getUserUuid().equals(userUuid)) targetUserUuids.add(roomUser.getUserUuid());
+            }
+        }
+        return targetUserUuids;
     }
 
 

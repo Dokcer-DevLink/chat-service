@@ -1,4 +1,4 @@
-package com.goorm.devlink.chatservice.vo;
+package com.goorm.devlink.chatservice.vo.response;
 
 
 
@@ -7,6 +7,7 @@ import com.goorm.devlink.chatservice.dto.RoomUserCreateDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,10 +30,13 @@ public class ChatRoomResponse {
                 .build();
     }
 
-    public static ChatRoomResponse convert(ChatRoomDto chatRoomDto, String sender){
+    public static ChatRoomResponse convert(ChatRoomDto chatRoomDto, String sender, List<ProfileSimpleResponse> profileInfo){
         ChatRoomResponse chatRoomResponse = new ChatRoomResponse();
         for (RoomUserCreateDto roomUser : chatRoomDto.getRoomUsers()) {
             if(!roomUser.getUserUuid().equals(sender)) {
+                ProfileSimpleResponse targetProfile = getProfileInfo(profileInfo,roomUser.getUserUuid());
+                chatRoomResponse.setTargetNickname(targetProfile.getNickname());
+                chatRoomResponse.setImageUrl(targetProfile.getProfileImageUrl());
                 chatRoomResponse.setRoomUuid(chatRoomDto.getRoomUuid()); // RoomId
                 chatRoomResponse.setTargetUuid(roomUser.getUserUuid()); // 대화상대 userId
                 chatRoomResponse.setRecentMessage(chatRoomDto.getRecentMessage()); // 가장 최근 대화 메시지
@@ -43,6 +47,11 @@ public class ChatRoomResponse {
         }
 
         return chatRoomResponse;
+    }
+
+    private static ProfileSimpleResponse getProfileInfo(List<ProfileSimpleResponse> profileInfo, String targetUuid){
+        return profileInfo.stream().filter(profile -> profile.getUserUuid().equals(targetUuid))
+                .findFirst().orElse(ProfileSimpleResponse.getInstance());
     }
 
 

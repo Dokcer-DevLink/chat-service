@@ -1,4 +1,4 @@
-package com.goorm.devlink.chatservice.vo;
+package com.goorm.devlink.chatservice.vo.response;
 
 import lombok.Builder;
 import lombok.Getter;

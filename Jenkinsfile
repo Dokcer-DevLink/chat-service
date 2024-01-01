@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Define environment variables.
-        dockerHubRegistry = 'lordofkangs'
+        dockerHubRegistry = 'moonsungkim'
         DOCKERHUB_CREDENTIALS = 'dockerhub' // Replace with your Jenkins credentials ID for DockerHub..
         IMAGE_NAME = 'chat-service' // Your DockerHub repository name
         IMAGE_TAG = 'tagname' // Replace with your desired tag name, or use dynamic values like ${BUILD_NUMBER}
@@ -54,15 +54,15 @@ pipeline {
             post {
                 failure {
                   echo 'Docker Image Push failure !'
-                  // sh "docker rmi ${dockerHubRegistry}/${IMAGE_NAME}:${currentBuild.number}"
-                  // sh "docker rmi ${dockerHubRegistry}/${IMAGE_NAME}:latest"
-                  sh "docker image prune -f"
+                  sh "docker rmi ${dockerHubRegistry}/${IMAGE_NAME}:${currentBuild.number}"
+                  sh "docker rmi ${dockerHubRegistry}/${IMAGE_NAME}:latest"
+//                   sh "docker image prune -f"
                 }
                 success {
                     echo 'Docker image push success !'
-                    // sh "docker rmi ${dockerHubRegistry}/${IMAGE_NAME}:${currentBuild.number}"
-                    // sh "docker rmi ${dockerHubRegistry}/${IMAGE_NAME}:latest"
-                    sh "docker image prune -f"
+                    sh "docker rmi ${dockerHubRegistry}/${IMAGE_NAME}:${currentBuild.number}"
+                    sh "docker rmi ${dockerHubRegistry}/${IMAGE_NAME}:latest"
+//                     sh "docker image prune -f"
 
                 }
             }

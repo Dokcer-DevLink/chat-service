@@ -85,9 +85,9 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 
     }
 
+    /** 채팅리스트 조회 **/
     @Override
     public List<ChatRoom> findAllChatRoomByUserId(String userUuid) {
-
 
         return queryFactory.selectFrom(chatRoom)
                 .distinct()
@@ -99,6 +99,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
                                 roomUser.userState.ne(RoomUserState.EXITED),
                                 roomUser.userUuid.eq(userUuid)
                         )))
+                .orderBy(chatRoom.recentDate.desc())
                 .fetch();
     }
 

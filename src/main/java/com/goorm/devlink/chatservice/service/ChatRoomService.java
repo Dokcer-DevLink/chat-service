@@ -2,10 +2,9 @@ package com.goorm.devlink.chatservice.service;
 
 
 import com.goorm.devlink.chatservice.dto.ChatDto;
-import com.goorm.devlink.chatservice.vo.ChatRoomResponse;
+import com.goorm.devlink.chatservice.vo.response.ChatRoomResponse;
 import com.goorm.devlink.chatservice.vo.RoomUserState;
 import org.springframework.data.domain.Slice;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 
 import java.time.LocalDateTime;
 import java.util.List;

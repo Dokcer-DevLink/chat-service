@@ -23,6 +23,7 @@ public class ChatRoom extends BaseTimeEntity {
     @Column(name = "room_uuid", unique = true)
     private String roomUuid;
 
+    @Lob
     @Column(name = "recent_message")
     private String recentMessage;
 

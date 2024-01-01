@@ -19,18 +19,23 @@ public class ChatMessage extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "message_id")
     private Long id;
+
+    @Lob
     @Column(name="message")
     private String message;
+
     @Column(name="message_time")
     private LocalDateTime messageTime;
+
     @Column(name="sender_uuid")
     private String senderUuid;
+
     @Column(name="room_uuid")
     private String roomUuid;
+
     @Column(name="type")
     @Enumerated(EnumType.STRING)
     private ChatDto.MessageType type;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")

@@ -37,7 +37,7 @@ public class ChatRoomController {
     @PostMapping("/send")
     public ResponseEntity<Void> publishMessageToTopic(@RequestBody @Valid ChatDto chatDto)
             throws ExecutionException, InterruptedException {
-        if(chatDto.getType()==ChatDto.MessageType.TALK) chatRoomService.processSendMessage(chatDto);
+        chatRoomService.processSendMessage(chatDto);
         kafkaTemplate.send(kafkaConfigVo.getTopicName(),chatDto).get();
         log.info("======= Kafka Producer [ SEND ] ========");
         log.info("전송자 : {}", chatDto.getSenderUuid());

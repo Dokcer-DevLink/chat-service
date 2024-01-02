@@ -21,10 +21,10 @@ public class StompCommandHandler implements ChannelInterceptor {
 
         if(StompCommand.UNSUBSCRIBE.equals(headerAccessor.getCommand())){
             headerAccessor.getSessionAttributes().put("unSubscribe",true);
-
         }
-        else if(!StompCommand.DISCONNECT.equals(headerAccessor.getCommand())){
-            headerAccessor.getSessionAttributes().put("unSubscribe",false);
+
+        else if(headerAccessor.getSessionAttributes().get("unSubscribe") == null){
+            headerAccessor.getSessionAttributes().put("unSubscribe", false);
         }
 
         log.info("[CHAT-SERVICE] {} 요청 ", headerAccessor.getCommand());

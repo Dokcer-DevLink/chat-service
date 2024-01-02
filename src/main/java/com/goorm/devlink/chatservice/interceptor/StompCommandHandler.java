@@ -21,12 +21,15 @@ public class StompCommandHandler implements ChannelInterceptor {
 
         if(StompCommand.UNSUBSCRIBE.equals(headerAccessor.getCommand())){
             headerAccessor.getSessionAttributes().put("unSubscribe",true);
+
         }
         else if(!StompCommand.DISCONNECT.equals(headerAccessor.getCommand())){
             headerAccessor.getSessionAttributes().put("unSubscribe",false);
         }
 
-        log.info("[CHAT-SERVICE] {} 요청 시작 ! ", headerAccessor.getCommand());
+        log.info("[CHAT-SERVICE] {} 요청 ", headerAccessor.getCommand());
+        log.info("[CHAT-SERVICE] 세션ID : {} ", headerAccessor.getSessionId());
+        log.info("[CHAT-SERVICE] 구독취소여부 : {} ",headerAccessor.getSessionAttributes().get("unSubscribe"));
 
         return message;
     }
@@ -42,7 +45,7 @@ public class StompCommandHandler implements ChannelInterceptor {
     public void afterSendCompletion(Message<?> message, MessageChannel channel, boolean sent, Exception ex) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(message);
 
-        log.info("[CHAT-SERVICE] {} 요청 종료  !", headerAccessor.getCommand());
+        log.info("[CHAT-SERVICE] {} 요청 종료", headerAccessor.getCommand());
     }
 
 

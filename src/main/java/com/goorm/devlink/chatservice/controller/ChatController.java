@@ -77,7 +77,9 @@ public class ChatController {
     // 세션이 자동으로 종료되는 경우 -> StompHeaderAccessor에 데이터가 담기지 않아 NullPointer Exception이 발생한다.
     @EventListener
     public void webSocketDisconnectionListener(SessionDisconnectEvent event){
-        if(event.getCloseStatus().getCode() != 3000) return;
+        log.info("--------Into webSocketDisconnectionListener Method--------");
+        log.info("event.getCloseStatus().getCode(): {}", event.getCloseStatus().getCode());
+        if(event.getCloseStatus().getCode() != 1000) return;
         SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.wrap(event.getMessage());
         boolean isUnsubscribe = (boolean)headerAccessor.getSessionAttributes().get("unSubscribe");
         String userUuid = (String) headerAccessor.getSessionAttributes().get("userUuid");

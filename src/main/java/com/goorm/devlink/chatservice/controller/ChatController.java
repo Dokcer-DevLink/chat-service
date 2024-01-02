@@ -42,7 +42,7 @@ public class ChatController {
     }
 
     @MessageMapping("/chat/sessions")
-    public void setSessionOptions(@Payload ChatDto chatDto, SimpMessageHeaderAccessor headerAccessor){
+    public void setSessionOptions(@Payload ChatDto chatDto, StompHeaderAccessor headerAccessor){
         headerAccessor.getSessionAttributes().put("userUuid", chatDto.getSenderUuid());
         headerAccessor.getSessionAttributes().put("roomUuid", chatDto.getRoomUuid());
         chatRoomService.updateEnterUserState(RoomUserState.IN,chatDto);
@@ -80,7 +80,7 @@ public class ChatController {
         log.info("--------Into webSocketDisconnectionListener Method--------");
         log.info("event.getCloseStatus().getCode(): {}", event.getCloseStatus().getCode());
         if(event.getCloseStatus().getCode() != 1000) return;
-        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.wrap(event.getMessage());
+        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
         boolean isUnsubscribe = (boolean)headerAccessor.getSessionAttributes().get("unSubscribe");
         String userUuid = (String) headerAccessor.getSessionAttributes().get("userUuid");
         String roomUuid = (String) headerAccessor.getSessionAttributes().get("roomUuid");

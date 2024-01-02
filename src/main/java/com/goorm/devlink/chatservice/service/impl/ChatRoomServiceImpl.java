@@ -23,11 +23,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import static com.goorm.devlink.chatservice.dto.ChatDto.*;
 
 @Service
 @Slf4j
@@ -55,7 +58,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         ChatRoom chatRoom = chatRoomRepository.findChatRoomByRoomUuid(chatDto.getRoomUuid())
                 .orElseThrow(() -> new NoSuchElementException(messageUtil.getRoomNoSuchMessage(chatDto.getRoomUuid())));
 
-        chatRoomRepository.updateRecentMessageData(chatDto);
+        if(chatDto.getType().equals(MessageType.TALK)) chatRoomRepository.updateRecentMessageData(chatDto);
         chatMessageRepository.save(modelMapperUtil.convertToChatMessage(chatDto,chatRoom));
     }
 
@@ -74,6 +77,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
+    @Transactional
     public void updateEnterUserState(RoomUserState roomUserState, ChatDto chatDto) {
         long count = roomUserRepository.updateRoomUserState(roomUserState, chatDto);
         if ( count <= 0 ) throw new NoSuchElementException(messageUtil.getUserNoSuchMessage(chatDto));
@@ -81,11 +85,12 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
+    @Transactional
     public ChatDto doExitUserProcess(ChatDto chatDto) {
 
         long count = roomUserRepository.updateRoomUserState(RoomUserState.EXITED, chatDto);// User 상태 변경하기
         if ( count <= 0 ) throw new NoSuchElementException(messageUtil.getUserNoSuchMessage(chatDto));
-
+        processSendMessage(chatDto);
         return chatDto;
     }
 

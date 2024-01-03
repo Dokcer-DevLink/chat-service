@@ -50,7 +50,7 @@ data:
     pub: /pub
   page:
     offset: 0
-    size: 4
+    size: 2
     orderBy: messageTime
 
 

@@ -3,14 +3,20 @@
 <h3> 멘토와 멘티의 대화 서비스</h3>
 </div>
 
+<br>
+<br>
+
 
 ## Architecture
 <img width="9116" alt="인프라아키텍처" src="https://github.com/Dokcer-DevLink/chat-service/assets/80077569/871ed4c5-f886-47a1-9171-69f09cd96883">
 
+<br>
+<br>
+
 ## Description
 
 ### - Spring Websocket Message Broker 사용
-구현의 용이성을 고려하여 SpringBoot에서 제공하는 WebsocketMessageBroker를 사용하였고 STOMP 엔드포인트를 열어 STOMP 통신을 하였다. 
+구현의 용이성을 고려하여 Spring에서 제공하는 WebsocketMessageBroker를 사용하였고 STOMP 엔드포인트를 열어 STOMP 통신을 하였다. 
 
 ### - Kafka 연동
 SpringBoot 내부에서 제공하는 메시지브로커를 사용하다보니 여러 서버에서 메시지브로커를 공유하지 못하는 문제가 발생했다. 
@@ -19,6 +25,8 @@ WebsocketMessageBroker를 걷어내고 Redis의 pub/sub 사용을 고려했지�
 ### - QueryDSL 사용
 간단한 쿼리는 Spring Data JPA로 자동생성하였고 복잡한 쿼리는 타입 안정성과 동적 쿼리 생성을 고려하여 QueryDSL를 사용하였다.
 
+<br>
+<br>
 
 ## Issue
 
